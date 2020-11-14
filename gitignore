@@ -1,0 +1,10 @@
+**/checkpoints/
+**/__pycache__/
+**/runs/
+**/.vscode/
+**/*.npz
+data/
+**/*.pth
+**/*.pkl
+**/log.txt
+**/*.png
