@@ -1,0 +1,8 @@
+alias tm="tmux -uCC"
+alias tma="tmux -uCC attach"
+alias tmn="tmux -uCC new-session -t"
+alias tmk="tmux kill-session -t"
+alias tml="tmux list-sessions"
+alias nsmi="nvidia-smi"
+
+alias board="tensorboard --bind_all --logdir "
