@@ -64,3 +64,33 @@ def torch_the_same(X, Y, eps=1e-8):
     useful for unit test and debug
     """
     return (X - Y).abs().min() < eps
+
+class EarlyStopping(object):
+    def __init__(self, patience, save_dir):
+        self.patience = patience
+        self.counter = 0
+        self.best_metrics = None
+        self.save_dir = save_dir
+        self.early_stop = False
+
+    def step(self, model, epoch, *metrics):
+        if self.best_metrics is None:
+            self.metrics = [0 for _ in metrics]
+            self.save_checkpoint(model, epoch)
+        elif all([metric < best_metric for metric, best_metric in zip(metrics, self.best_metrics)]):
+            self.counter += 1
+            print(
+                f'EarlyStopping counter: {self.counter} out of {self.patience}')
+            if self.counter >= self.patience:
+                self.early_stop = True
+        else:
+            if all([metric > best_metric for metric, best_metric in zip(metrics, self.best_metrics)]):
+                self.save_checkpoint(model, epoch)
+            for i, (metric, best_metric) in enumerate(zip(metrics, self.best_metrics)):
+                self.best_metrics[i] = max(metric, best_metric)
+            self.counter = 0
+        return self.early_stop
+
+    def save_checkpoint(self, model, epoch):
+        save_path = os.path.join(self.save_dir, '%d.pth'%epoch)
+        torch.save(model.state_dict(), save_path)
