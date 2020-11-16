@@ -75,7 +75,6 @@ class EarlyStopping(object):
         self.early_stop = False
 
     def step(self, model, epoch, *metrics):
-        print(self.best_metrics)
         if self.best_metrics is None:
             self.best_metrics = [metric for metric in metrics]
             self.save_checkpoint(model, epoch)
