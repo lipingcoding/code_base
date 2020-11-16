@@ -65,6 +65,7 @@ def torch_the_same(X, Y, eps=1e-8):
     """
     return (X - Y).abs().min() < eps
 
+
 class EarlyStopping(object):
     def __init__(self, patience, save_dir):
         self.patience = patience
@@ -74,8 +75,9 @@ class EarlyStopping(object):
         self.early_stop = False
 
     def step(self, model, epoch, *metrics):
+        print(self.best_metrics)
         if self.best_metrics is None:
-            self.metrics = [0 for _ in metrics]
+            self.best_metrics = [metric for metric in metrics]
             self.save_checkpoint(model, epoch)
         elif all([metric < best_metric for metric, best_metric in zip(metrics, self.best_metrics)]):
             self.counter += 1
