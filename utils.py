@@ -9,6 +9,7 @@ def set_seed(seed):
         torch.cuda.manual_seed(seed)
         torch.cuda.manual_seed_all(seed)  # multi-gpu
     torch.manual_seed(seed)
+    torch.backends.cudnn.deterministic = True
 
 def nowdt():
     """
