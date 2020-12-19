@@ -67,32 +67,32 @@ def torch_the_same(X, Y, eps=1e-8):
     return (X - Y).abs().min() < eps
 
 
-class EarlyStopping(object):
-    def __init__(self, patience, save_dir):
+class EarlyStopping:
+    def __init__(self, patience=10, path=''):
         self.patience = patience
         self.counter = 0
-        self.best_metrics = None
-        self.save_dir = save_dir
+        self.best_score = None
         self.early_stop = False
+        self.save_path = path
 
-    def step(self, model, epoch, *metrics):
-        if self.best_metrics is None:
-            self.best_metrics = [metric for metric in metrics]
-            self.save_checkpoint(model, epoch)
-        elif all([metric < best_metric for metric, best_metric in zip(metrics, self.best_metrics)]):
+    def step(self, acc, model):
+        score = acc
+        if self.best_score is None:
+            self.best_score = score
+            self.save_checkpoint(model)
+        elif score < self.best_score:
             self.counter += 1
-            print(
-                f'EarlyStopping counter: {self.counter} out of {self.patience}')
+            logging.info(f'EarlyStopping counter: {self.counter} out of {self.patience}')
             if self.counter >= self.patience:
                 self.early_stop = True
         else:
-            if all([metric > best_metric for metric, best_metric in zip(metrics, self.best_metrics)]):
-                self.save_checkpoint(model, epoch)
-            for i, (metric, best_metric) in enumerate(zip(metrics, self.best_metrics)):
-                self.best_metrics[i] = max(metric, best_metric)
+            self.best_score = score
+            self.save_checkpoint(model)
             self.counter = 0
         return self.early_stop
 
-    def save_checkpoint(self, model, epoch):
-        save_path = os.path.join(self.save_dir, '%d.pth'%epoch)
-        torch.save(model.state_dict(), save_path)
+    def save_checkpoint(self, model):
+        save_dir = '/'.join(self.save_path.split('/')[:-1])
+        if not os.path.exists(save_dir):
+            os.makedirs(save_dir)
+        torch.save(model.state_dict(), self.save_path)
