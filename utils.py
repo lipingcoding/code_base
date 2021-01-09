@@ -96,3 +96,23 @@ class EarlyStopping:
         if not os.path.exists(save_dir):
             os.makedirs(save_dir)
         torch.save(model.state_dict(), self.save_path)
+        
+ 
+class Logger(object):
+    """
+    这个类的目的是尽可能不改变原始代码的情况下, 使得程序的输出同时打印在控制台和保存在文件中
+    用法: 只需在程序中加入一行 `sys.stdout = Logger(log_file_path)` 即可
+    """
+    def __init__(self, file_path):
+        self.terminal = sys.stdout
+        self.log = open(file_path, "a")
+
+    def write(self, message):
+        self.terminal.write(message)
+        self.log.write(message)
+
+    def flush(self):
+        #this flush method is needed for python 3 compatibility.
+        #this handles the flush command by doing nothing.
+        #you might want to specify some extra behavior here.
+        pass
