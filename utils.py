@@ -117,3 +117,8 @@ class Logger(object):
         #this handles the flush command by doing nothing.
         #you might want to specify some extra behavior here.
         pass
+    
+# 打印参数数目
+total_params = sum(p.numel() for p in model.parameters())
+trainable_total_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
+print(f'total params: {total_params}, trainable_total_params: {trainable_total_params}')
