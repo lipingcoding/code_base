@@ -109,7 +109,6 @@ class Logger(object):
         self.log = open(file_path, "a")
 
     def write(self, message):
-        message = nowdt() + ' ' + message
         self.terminal.write(message)
         self.log.write(message)
 
