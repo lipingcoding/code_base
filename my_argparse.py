@@ -20,7 +20,8 @@ class MyArgumentParser(ArgumentParser):
         with open(args.config, "r") as setting:
             config = yaml.load(setting, Loader=yaml.SafeLoader)
         for key, value in new_conf.items():
-            config[key] = value
+            if value is not None:
+                config[key] = value
 
         return Namespace(**config)
 
