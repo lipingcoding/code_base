@@ -2,6 +2,7 @@ def set_seed(seed):
     import numpy as np
     import random
     import torch
+    import dgl
     
     np.random.seed(seed)
     random.seed(seed)
@@ -10,7 +11,8 @@ def set_seed(seed):
         torch.cuda.manual_seed_all(seed)  # multi-gpu
     torch.manual_seed(seed)
     torch.backends.cudnn.deterministic = True
-
+    dgl.seed(seed)
+    
 def nowdt():
     """
     get string representation of date and time of now()
