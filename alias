@@ -6,3 +6,6 @@ alias tml="tmux list-sessions"
 alias nsmi="nvidia-smi"
 
 alias board="tensorboard --bind_all --logdir "
+
+alias gitdog='git log --all --decorate --oneline --graph'
+alias wgpu='watch --color -n1 gpustat -cpu'
