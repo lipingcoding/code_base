@@ -132,3 +132,9 @@ def mkdir_if_not_exist(file_name):
 total_params = sum(p.numel() for p in model.parameters())
 trainable_total_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
 print(f'total params: {total_params}, trainable_total_params: {trainable_total_params}')
+
+
+def git_hash():
+    import subprocess
+    hash = subprocess.check_output(["git", "describe", '--always']).strip()
+    return hash.decode("utf-8") 
